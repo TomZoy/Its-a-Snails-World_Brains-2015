@@ -27,6 +27,12 @@ public class test : MonoBehaviour {
         {
             BlockRepresentation1.displayGrid();
             t = false;
+            
+            Debug.Log("membercount: "+ BlockRepresentation1.countMembers(4));
+
+            BlockRepresentation1.openAGateVert(4, 1);
+            BlockRepresentation1.displayGrid();
+            
         }
     }
 }
