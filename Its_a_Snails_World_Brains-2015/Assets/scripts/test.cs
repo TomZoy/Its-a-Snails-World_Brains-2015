@@ -30,7 +30,8 @@ public class test : MonoBehaviour {
             
             Debug.Log("membercount: "+ BlockRepresentation1.countMembers(4));
 
-            BlockRepresentation1.openAGateVert(4, 1);
+          //  BlockRepresentation1.openAGateVert(4, 0);
+            BlockRepresentation1.openAGateVert(4, 0);
             BlockRepresentation1.displayGrid();
             
         }
