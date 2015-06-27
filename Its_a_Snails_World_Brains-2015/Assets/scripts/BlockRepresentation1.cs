@@ -9,18 +9,8 @@ public class BlockRepresentation1  {
 
     //arayist can store the number of elements assigned to an ID
 
- 
 
-	// Use this for initialization
-	void Start () {
-
-
-	}
 	
-	// Update is called once per frame
-	void Update () {
-   
-	}
 
 
 
@@ -91,6 +81,48 @@ public class BlockRepresentation1  {
         }
 
         return count;
+    }
+
+
+    public void openGate(int row, int col)
+    {
+        //DIRECTIONS = UP=0; right = 1; down =2; left=3
+    }
+
+    public static void openAGateVert(int row, int col)
+    {
+
+
+        int direction = 10;
+        int i = 0;
+        int b = 0;
+
+
+        if (row == 0) { direction = 2; i = 1; b = 6; };
+        if (row == 6) { direction = 0; i = 6; b = 1; };
+
+        //go through the whole col
+        while (i != b)
+        { //while statement is true
+            Debug.Log(i + " " + col);
+
+            //look for block, avoid water tiles
+            if (numbers[i, col] != 0)
+            {
+
+                //in case theres empty water that way (only if it's a 1x1 block)
+                if (countMembers(numbers[i, col]) == 1)
+                {
+                    if (checkIfCanMove(i, col, direction) == true) { doMoveBlock(numbers[i, col], direction); }
+                }
+                //
+
+
+            }
+
+            if (direction == 2) { i++; } else { i--; }
+        }
+
     }
 
     public static void openAGateHor(int row, int col)
