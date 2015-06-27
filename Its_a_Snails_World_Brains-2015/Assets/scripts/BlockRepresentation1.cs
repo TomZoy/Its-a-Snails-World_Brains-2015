@@ -109,14 +109,15 @@ public class BlockRepresentation1  {
             //look for block, avoid water tiles
             if (numbers[i, col] != 0)
             {
-
+    
                 //in case theres empty water that way (only if it's a 1x1 block)
                 if (countMembers(numbers[i, col]) == 1)
                 {
                     if (checkIfCanMove(i, col, direction) == true) { doMoveBlock(numbers[i, col], direction); }
                 }
-                //
-
+                else
+                { break; }
+ 
 
             }
 
@@ -150,7 +151,6 @@ public class BlockRepresentation1  {
                         {
                             if (checkIfCanMove(row, i, direction) == true)  {  doMoveBlock(numbers[row, i], direction);  }
                         }
-<<<<<<< HEAD
 
                     else if (countMembers(numbers[row, i]) == 2)
                         {
@@ -164,9 +164,6 @@ public class BlockRepresentation1  {
 
                     else
                     { break; }
-=======
-                //
->>>>>>> parent of a82c92b... blocks now block water from further block away from gate
 
 
             }
@@ -209,7 +206,7 @@ public class BlockRepresentation1  {
         else if (dir == 3) 
         {
             if (col == 1) { return false; }  //refuse block going down from the board
-            if (numbers[row, col - 1] == 0) { return true; Debug.Log("HEEEEREREEEE"); } { return false; } 
+            if (numbers[row, col - 1] == 0) { return true; } { return false; } 
         }
 
         //to make the function happy .... -.-"
