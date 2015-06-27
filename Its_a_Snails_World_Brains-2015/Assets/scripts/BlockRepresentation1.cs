@@ -18,7 +18,7 @@ public class BlockRepresentation1  {
     {
         // row - column
         numbers[1,1] = 1;
-        numbers[1,2] = 1;
+        numbers[1,2] = 0;
         numbers[1,3] = 2;
         numbers[1,4] = 0;
         numbers[1,5] = 0;
@@ -26,7 +26,7 @@ public class BlockRepresentation1  {
         // row - column
         numbers[2, 1] = 3;
         numbers[2, 2] = 0;
-        numbers[2, 3] = 2;
+        numbers[2, 3] = 0;
         numbers[2, 4] = 0;
         numbers[2, 5] = 0;
 
@@ -48,7 +48,7 @@ public class BlockRepresentation1  {
         numbers[5, 1] = 0;
         numbers[5, 2] = 0;
         numbers[5, 3] = 5;
-        numbers[5, 4] = 5;
+        numbers[5, 4] = 0;
         numbers[5, 5] = 0;
     }
 
@@ -150,7 +150,7 @@ public class BlockRepresentation1  {
                         {
                             if (checkIfCanMove(row, i, direction) == true)  {  doMoveBlock(numbers[row, i], direction);  }
                         }
-<<<<<<< HEAD
+
 
                     else if (countMembers(numbers[row, i]) == 2)
                         {
@@ -164,9 +164,7 @@ public class BlockRepresentation1  {
 
                     else
                     { break; }
-=======
-                //
->>>>>>> parent of a82c92b... blocks now block water from further block away from gate
+
 
 
             }
@@ -209,7 +207,7 @@ public class BlockRepresentation1  {
         else if (dir == 3) 
         {
             if (col == 1) { return false; }  //refuse block going down from the board
-            if (numbers[row, col - 1] == 0) { return true; Debug.Log("HEEEEREREEEE"); } { return false; } 
+            if (numbers[row, col - 1] == 0) { return true;  } { return false; } 
         }
 
         //to make the function happy .... -.-"
