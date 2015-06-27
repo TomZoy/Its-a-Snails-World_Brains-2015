@@ -30,8 +30,13 @@ public class test : MonoBehaviour {
             
             Debug.Log("membercount: "+ BlockRepresentation1.countMembers(3));
 
+<<<<<<< HEAD
             BlockRepresentation1.openAGateHor(5, 0);
            // BlockRepresentation1.openAGateVert(0,1);
+=======
+          //  BlockRepresentation1.openAGateVert(4, 0);
+            BlockRepresentation1.openAGateVert(0, 1);
+>>>>>>> parent of a82c92b... blocks now block water from further block away from gate
             BlockRepresentation1.displayGrid();
             
         }
