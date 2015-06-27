@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BlockClassWay : MonoBehaviour {
+public class BlockClassWay {
 
     int ID;
     int col;

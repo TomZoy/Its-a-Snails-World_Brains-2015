@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class BlockRepresentation1  {
 
@@ -7,10 +8,9 @@ public class BlockRepresentation1  {
 
     static string test;
 
+    public static List<Vector3> BlocksToMove = new List<Vector3>();
+
     //arayist can store the number of elements assigned to an ID
-
-
-	
 
 
 
@@ -56,10 +56,10 @@ public class BlockRepresentation1  {
     {
 
 
-        for (int j = 1; j < 6; j++)
+        for (int j = 0; j < 7; j++)
         {
             test = "";
-            for (int i = 1; i < 6; i++)
+            for (int i = 0; i < 7; i++)
             {
                 test += numbers[j, i];
                 test += ", ";
@@ -141,8 +141,6 @@ public class BlockRepresentation1  {
 
         //go through the whole row
         while ( i != b  ) { //while statement is true
-        //for (int i = 1; i < 6; i++)
-        //{
 
             //look for block, avoid water tiles
             if (numbers[row, i] != 0)
@@ -153,6 +151,17 @@ public class BlockRepresentation1  {
                         {
                             if (checkIfCanMove(row, i, direction) == true)  {  doMoveBlock(numbers[row, i], direction);  }
                         }
+
+                    else if (countMembers(numbers[row, i]) == 2)
+                        {
+                            if ((checkIfCanMove(row, i + 1, direction) == true) && (checkIfCanMove(row, i, direction) == true)) 
+                            {
+                                Debug.Log("iterating");
+
+                                doMoveBlock(numbers[row, i ], direction); 
+                            }
+                        }
+
                     else
                     { break; }
 
@@ -174,14 +183,18 @@ public class BlockRepresentation1  {
         if (dir == 0) 
         {
             if (row == 1) { return false; }  //refuse block going down from the board
-            else if(numbers[row-1, col] == 0) {return true;} {return false;} //if it's water you can go, otherwise not
+            else if (numbers[row - 1, col] == 0) { return true; }
+            else if (numbers[row - 1, col] == numbers[row, col]) { return true; }
+            else { return false; } //if it's water you can go, otherwise not
             // 
         }
 
         else if (dir == 1) 
         {
-            if (col == 5) { return false; }  //refuse block going down from the board
-            else if (numbers[row, col+1] == 0) { return true; } { return false; } 
+            if (col == 6) { return false; }  //refuse block going down from the board
+            else if (numbers[row, col+1] == numbers[row, col]) { return true; }
+            else if (numbers[row, col+1] == 0) { return true; } 
+            else { return false; } 
         }
 
         else if (dir == 2)
@@ -203,26 +216,58 @@ public class BlockRepresentation1  {
     static void doMoveBlock (int ID, int dir)
    
     {
-        int[,] direction = new int[,]{{-1,0},{0,1},{1,0},{0,-1}};;
+       // int[,] direction = new int[,]{{-1,0},{0,1},{1,0},{0,-1}};;
 
 
 
         Debug.Log("MOOVING");
 
+        BlocksToMove.Clear();
+
+        //build a list of object to move
         for (int j = 1; j < 6; j++)
         {
             for (int i = 1; i < 6; i++)
             {
                 if (numbers[j, i] == ID) 
                 {
-                    numbers[(direction[dir,0] + j), direction[dir,1] +i] = numbers[j, i]; 
-                    numbers[j, i] = 0;
-                    return;
+                   // numbers[(direction[dir,0] + j), (direction[dir,1] +i)] = numbers[j, i]; 
+                  //  numbers[j, i] = 0;
+                    BlocksToMove.Add(new Vector3(ID,j,i));
+                    //return;
+                };
+            }
+        }
+
+        //update the effected values
+        for (int z = 0; z < BlocksToMove.Count; z++)
+        {
+            Vector3 V = BlocksToMove[z];
+            V.x += 1;
+
+        }
+
+        //update the phisical values
+        //build a list of object to move
+        for (int j = 1; j < 6; j++)
+        {
+            int z;
+            for (int i = 1; i < 6; i++)
+            {
+                if (numbers[j, i] == ID)
+                {
+ //                   int a = BlocksToMove[z].y;
+
+//                    numbers[i] = (int) BlocksToMove[z].z;
+
+//                    z++;
+                   // BlocksToMove.Add(new Vector3(ID, j, i));
+                    //return;
                 };
             }
         }
     }
     
-
+    // BUILD A LIST FOR THE BLOCKS THAT ABOUT TO MOVE !!!
 
 }
