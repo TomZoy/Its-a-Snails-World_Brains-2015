@@ -28,14 +28,16 @@ public class test : MonoBehaviour {
             BlockRepresentation1.displayGrid();
             t = false;
             
-            Debug.Log("membercount: "+ BlockRepresentation1.countMembers(3));
+           
 
 
-            BlockRepresentation1.openAGateHor(5, 0);
-           // BlockRepresentation1.openAGateVert(0,1);
+            //BlockRepresentation1.openAGateHor(1, 0);
+           BlockRepresentation1.openAGate(1,6);
+
+           Debug.Log("-----------------------");
 
           //  BlockRepresentation1.openAGateVert(4, 0);
-            BlockRepresentation1.openAGateVert(0, 1);
+           // BlockRepresentation1.openAGateVert(0, 1);
 
             BlockRepresentation1.displayGrid();
             

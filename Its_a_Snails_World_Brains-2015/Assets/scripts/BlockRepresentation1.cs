@@ -84,15 +84,19 @@ public class BlockRepresentation1  {
     }
 
 
-    public void openGate(int row, int col)
+    public static void openAGate(int row, int col)
     {
         //DIRECTIONS = UP=0; right = 1; down =2; left=3
+
+        if ((row == 0) || (row == 6)) { openAGateVert(row, col); }
+        else if ((col == 0) || (col == 6)) { openAGateHor(row, col); }
+        else { Debug.Log("ERROR, INVALID VALUE"); };
     }
 
     public static void openAGateVert(int row, int col)
     {
 
-
+        bool terminteLoop = false;
         int direction = 10;
         int i = 0;
         int b = 0;
@@ -102,9 +106,9 @@ public class BlockRepresentation1  {
         if (row == 6) { direction = 0; i = 6; b = 1; };
 
         //go through the whole col
-        while (i != b)
+        while ((i != b) && (terminteLoop == false))
         { //while statement is true
-            Debug.Log(i + " " + col);
+          //  Debug.Log(i + " " + col);
 
             //look for block, avoid water tiles
             if (numbers[i, col] != 0)
@@ -113,9 +117,10 @@ public class BlockRepresentation1  {
                 //in case theres empty water that way (only if it's a 1x1 block)
                 if (countMembers(numbers[i, col]) == 1)
                 {
-                    if (checkIfCanMove(i, col, direction) == true) { doMoveBlock(numbers[i, col], direction); }
+                    if (checkIfCanMove(i, col, direction) == true) { doMoveBlock(numbers[i, col], direction);  } //to exit the while} }
+                    else { terminteLoop = true; }
                 }
-                //
+                
 
 
             }
@@ -130,7 +135,7 @@ public class BlockRepresentation1  {
         int direction=10;
         int i=0;
         int b=0;
-
+        bool terminteLoop = false;
 
         if (col == 0) { direction = 1;  i = 1; b = 6; };
         if (col == 6) { direction = 3;  i = 6; b = 1; };
@@ -139,32 +144,20 @@ public class BlockRepresentation1  {
 
 
         //go through the whole row
-        while ( i != b  ) { //while statement is true
+        while ((i != b) && (terminteLoop==false))
+        { //while statement is true
 
             //look for block, avoid water tiles
             if (numbers[row, i] != 0)
             {
 
                 //in case theres empty water that way (only if it's a 1x1 block)
-                    if (countMembers(numbers[row, i]) == 1) 
-                        {
-                            if (checkIfCanMove(row, i, direction) == true)  {  doMoveBlock(numbers[row, i], direction);  }
-                        }
-
-
-                    else if (countMembers(numbers[row, i]) == 2)
-                        {
-                            if ((checkIfCanMove(row, i + 1, direction) == true) && (checkIfCanMove(row, i, direction) == true)) 
-                            {
-                                Debug.Log("iterating");
-
-                                doMoveBlock(numbers[row, i ], direction); 
-                            }
-                        }
-
-                    else
-                    { break; }
-
+                if (countMembers(numbers[row, i]) == 1)
+                {
+                    if (checkIfCanMove(row, i, direction) == true) { doMoveBlock(numbers[row, i], direction);  } //to exit the while}
+                    else { terminteLoop = true; }
+                }
+                
 
 
             }
@@ -185,15 +178,13 @@ public class BlockRepresentation1  {
         {
             if (row == 1) { return false; }  //refuse block going down from the board
             else if (numbers[row - 1, col] == 0) { return true; }
-            else if (numbers[row - 1, col] == numbers[row, col]) { return true; }
             else { return false; } //if it's water you can go, otherwise not
             // 
         }
 
         else if (dir == 1) 
         {
-            if (col == 6) { return false; }  //refuse block going down from the board
-            else if (numbers[row, col+1] == numbers[row, col]) { return true; }
+            if (col == 5) { return false; }  //refuse block going down from the board
             else if (numbers[row, col+1] == 0) { return true; } 
             else { return false; } 
         }
@@ -217,13 +208,12 @@ public class BlockRepresentation1  {
     static void doMoveBlock (int ID, int dir)
    
     {
-       // int[,] direction = new int[,]{{-1,0},{0,1},{1,0},{0,-1}};;
+        int[,] direction = new int[,]{{-1,0},{0,1},{1,0},{0,-1}};;
 
 
 
         Debug.Log("MOOVING");
 
-        BlocksToMove.Clear();
 
         //build a list of object to move
         for (int j = 1; j < 6; j++)
@@ -232,41 +222,16 @@ public class BlockRepresentation1  {
             {
                 if (numbers[j, i] == ID) 
                 {
-                   // numbers[(direction[dir,0] + j), (direction[dir,1] +i)] = numbers[j, i]; 
-                  //  numbers[j, i] = 0;
-                    BlocksToMove.Add(new Vector3(ID,j,i));
-                    //return;
+                    numbers[(direction[dir,0] + j), (direction[dir,1] +i)] = numbers[j, i]; 
+                    numbers[j, i] = 0;
+                    return;
                 };
             }
         }
 
-        //update the effected values
-        for (int z = 0; z < BlocksToMove.Count; z++)
-        {
-            Vector3 V = BlocksToMove[z];
-            V.x += 1;
 
-        }
 
-        //update the phisical values
-        //build a list of object to move
-        for (int j = 1; j < 6; j++)
-        {
-            int z;
-            for (int i = 1; i < 6; i++)
-            {
-                if (numbers[j, i] == ID)
-                {
- //                   int a = BlocksToMove[z].y;
 
-//                    numbers[i] = (int) BlocksToMove[z].z;
-
-//                    z++;
-                   // BlocksToMove.Add(new Vector3(ID, j, i));
-                    //return;
-                };
-            }
-        }
     }
     
     // BUILD A LIST FOR THE BLOCKS THAT ABOUT TO MOVE !!!
