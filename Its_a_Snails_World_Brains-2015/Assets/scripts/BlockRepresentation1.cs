@@ -48,9 +48,9 @@ public class BlockRepresentation1  {
         numbers[3, 5] = 0;
 
         // row - column
-        numbers[4, 1] = 4;
+        numbers[4, 1] = 0;
         numbers[4, 2] = 0;
-        numbers[4, 3] = 0;
+        numbers[4, 3] = 4;
         numbers[4, 4] = 0;
         numbers[4, 5] = 0;
 
@@ -93,23 +93,29 @@ public class BlockRepresentation1  {
         return count;
     }
 
-    public static void openAGateVert(int row, int col)
+    public static void openAGateHor(int row, int col)
     {
+        int direction = 10;
+        if (col == 0) { direction = 1; }
+        else if (col == 6) { direction = 3; }
+        else {Debug.LogError("ERROR, invalid direction");}
 
-        bool isGoingRight;
-        if (col == 0) { isGoingRight = true; } else { isGoingRight = false; };
-
-        for (int i = 1; i < 7; i++)
+        //go through the whole row
+        for (int i = 1; i < 6; i++)
         {
 
+            //look for block, avoid water tiles
             if (numbers[row, i] != 0)
             {
 
+
+
                 //in case theres empty water that way (only if it's a 1x1 block)
-                if (checkIfCanMove(row, i, 1) == true)
-                {
-                    if (countMembers(numbers[row, i]) == 1) { doMoveBlock(numbers[row, i], 1); }
-                };
+                    if (countMembers(numbers[row, i]) == 1) 
+                        {
+                            if (checkIfCanMove(row, i, direction) == true)  {  doMoveBlock(numbers[row, i], 1);  }
+                        }
+                //
 
 
             }
@@ -128,7 +134,8 @@ public class BlockRepresentation1  {
         if (dir == 0) 
         {
             if (row == 1) { return false; }  //refuse block going down from the board
-            else if(numbers[row-1, col] == 0) {return true;} {return false;} 
+            else if(numbers[row-1, col] == 0) {return true;} {return false;} //if it's water you can go, otherwise not
+            // 
         }
 
         else if (dir == 1) 
@@ -153,17 +160,22 @@ public class BlockRepresentation1  {
         return false;
     }
 
-    static void doMoveBlock (int ID, int direction)
+    static void doMoveBlock (int ID, int dir)
    
     {
-        Debug.Log("in here");
+        int[,] direction = new int[,]{{-1,0},{0,1},{1,0},{0,-1}};;
+
+
+
+        Debug.Log("MOOVING");
+
         for (int j = 1; j < 6; j++)
         {
             for (int i = 1; i < 6; i++)
             {
                 if (numbers[j, i] == ID) 
                 {
-                    numbers[j, i+1] = numbers[j, i]; 
+                    numbers[(direction[dir,0] + j), direction[dir,1] +i] = numbers[j, i]; 
                     numbers[j, i] = 0;
                     return;
                 };
