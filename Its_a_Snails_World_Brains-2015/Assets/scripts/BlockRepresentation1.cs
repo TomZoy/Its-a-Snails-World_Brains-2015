@@ -95,31 +95,37 @@ public class BlockRepresentation1  {
 
     public static void openAGateHor(int row, int col)
     {
-        int direction = 10;
-        if (col == 0) { direction = 1; }
-        else if (col == 6) { direction = 3; }
-        else {Debug.LogError("ERROR, invalid direction");}
+        int direction=10;
+        int i=0;
+        int b=0;
+
+
+        if (col == 0) { direction = 1;  i = 1; b = 6; };
+        if (col == 6) { direction = 3;  i = 6; b = 1; };
+        
+
+
 
         //go through the whole row
-        for (int i = 1; i < 6; i++)
-        {
+        while ( i != b  ) { //while statement is true
+        //for (int i = 1; i < 6; i++)
+        //{
 
             //look for block, avoid water tiles
             if (numbers[row, i] != 0)
             {
 
-
-
                 //in case theres empty water that way (only if it's a 1x1 block)
                     if (countMembers(numbers[row, i]) == 1) 
                         {
-                            if (checkIfCanMove(row, i, direction) == true)  {  doMoveBlock(numbers[row, i], 1);  }
+                            if (checkIfCanMove(row, i, direction) == true)  {  doMoveBlock(numbers[row, i], direction);  }
                         }
                 //
 
 
             }
 
+            if (direction == 1) { i++; } else {i--;}
         }
     }
 
@@ -153,7 +159,7 @@ public class BlockRepresentation1  {
         else if (dir == 3) 
         {
             if (col == 1) { return false; }  //refuse block going down from the board
-            if (numbers[row, col-1] == 0) { return true; } { return false; } 
+            if (numbers[row, col - 1] == 0) { return true; Debug.Log("HEEEEREREEEE"); } { return false; } 
         }
 
         //to make the function happy .... -.-"
