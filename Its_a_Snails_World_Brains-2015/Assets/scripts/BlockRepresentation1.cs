@@ -95,12 +95,11 @@ public class BlockRepresentation1  {
 
     public static void openAGateVert(int row, int col)
     {
-        //temp value !!! this sould be interated
-        int i = 1;
+
         bool isGoingRight;
         if (col == 0) { isGoingRight = true; } else { isGoingRight = false; };
 
-        for (int Z = 1; Z < 6; Z++)
+        for (int i = 1; i < 5; i++)
         {
 
             if (numbers[row, i] != 0)
