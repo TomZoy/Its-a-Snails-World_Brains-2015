@@ -13,6 +13,8 @@ public class Gate_Input : MonoBehaviour
     public float timerTemp = 0.0f;
     public bool gateHit = false;
 
+    public int x, y;
+
     // Use this for initialization
     void Start()
     {
@@ -31,11 +33,13 @@ public class Gate_Input : MonoBehaviour
             {
                 if (Physics.Raycast(ray, out hit))
                 {
-                    if (hit.transform.gameObject.tag == "Gate")
+                    if (hit.transform.gameObject.tag == "Gate" && BlockRepresentation1.isInputAllowed == true && hit.transform.gameObject == this.gameObject)
                     {
                         Debug.Log("hit gate");
                         //Destroy(this.gameObject); <---used to test clicks on touchpad
-
+                        BlockRepresentation1.isInputAllowed = false;
+                        BlockRepresentation1.openAGate(x, y);
+                        Debug.Log("x " + x + " y " + y);
                         //begin method that will open gate
                         OpenGate();
                     }

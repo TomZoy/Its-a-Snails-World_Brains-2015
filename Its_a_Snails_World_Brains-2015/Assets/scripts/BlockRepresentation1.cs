@@ -149,6 +149,8 @@ public class BlockRepresentation1  {
         if ((row == 0) || (row == 6)) { openAGateVert(row, col); }
         else if ((col == 0) || (col == 6)) { openAGateHor(row, col); }
         else { Debug.Log("ERROR, INVALID VALUE"); };
+
+        isInputAllowed = true;
     }
 
     public static void openAGateVert(int row, int col)
