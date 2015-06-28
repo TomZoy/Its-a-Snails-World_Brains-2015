@@ -20,8 +20,9 @@ public class BlockRepresentation1  {
 
     //arayist can store the number of elements assigned to an ID
 
-
-
+   
+    /*
+    
     public static void initialisation()
     {
         // row - column
@@ -59,7 +60,45 @@ public class BlockRepresentation1  {
         numbers[5, 4] = 0;
         numbers[5, 5] = 4;
     }
+    */
 
+    public static void initialisation()
+    {
+        // row - column
+        numbers[1, 1] = 0;
+        numbers[1, 2] = 1;
+        numbers[1, 3] = 2;
+        numbers[1, 4] = 0;
+        numbers[1, 5] = 0;
+
+        // row - column
+        numbers[2, 1] = 3;
+        numbers[2, 2] = 0;
+        numbers[2, 3] = 0;
+        numbers[2, 4] = 4;
+        numbers[2, 5] = 0;
+
+        // row - column
+        numbers[3, 1] = 0;
+        numbers[3, 2] = 5;
+        numbers[3, 3] = 0;
+        numbers[3, 4] = 0;
+        numbers[3, 5] = 0;
+
+        // row - column
+        numbers[4, 1] = 6;
+        numbers[4, 2] = 0;
+        numbers[4, 3] = 7;
+        numbers[4, 4] = 0;
+        numbers[4, 5] = 8;
+
+        // row - column
+        numbers[5, 1] = 0;
+        numbers[5, 2] = 0;
+        numbers[5, 3] = 9;
+        numbers[5, 4] = 0;
+        numbers[5, 5] = 0;
+    }
     public static void displayGrid()
     {
 
