@@ -32,7 +32,7 @@ public class test : MonoBehaviour {
 
 
             //BlockRepresentation1.openAGateHor(1, 0);
-           BlockRepresentation1.openAGate(6,1);
+           BlockRepresentation1.openAGate(2,6);
 
            Debug.Log("-----------------------");
 
