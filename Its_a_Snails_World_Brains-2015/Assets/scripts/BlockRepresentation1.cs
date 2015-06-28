@@ -10,6 +10,14 @@ public class BlockRepresentation1  {
 
     public static List<Vector3> BlocksToMove = new List<Vector3>();
 
+    public static List<GameObject> Blocks = new List<GameObject>();
+
+    public static GameObject pickedCube;
+
+    public static Vector2 lastPlace;
+
+    public static  bool isInputAllowed = true;
+
     //arayist can store the number of elements assigned to an ID
 
 
@@ -19,12 +27,12 @@ public class BlockRepresentation1  {
         // row - column
         numbers[1,1] = 1;
         numbers[1,2] = 0;
-        numbers[1,3] = 2;
+        numbers[1,3] = 0;
         numbers[1,4] = 0;
-        numbers[1,5] = 0;
+        numbers[1,5] = 2;
 
         // row - column
-        numbers[2, 1] = 3;
+        numbers[2, 1] = 0;
         numbers[2, 2] = 0;
         numbers[2, 3] = 0;
         numbers[2, 4] = 0;
@@ -40,16 +48,16 @@ public class BlockRepresentation1  {
         // row - column
         numbers[4, 1] = 0;
         numbers[4, 2] = 0;
-        numbers[4, 3] = 4;
+        numbers[4, 3] = 0;
         numbers[4, 4] = 0;
         numbers[4, 5] = 0;
 
         // row - column
-        numbers[5, 1] = 0;
+        numbers[5, 1] = 3;
         numbers[5, 2] = 0;
-        numbers[5, 3] = 5;
+        numbers[5, 3] = 0;
         numbers[5, 4] = 0;
-        numbers[5, 5] = 0;
+        numbers[5, 5] = 4;
     }
 
     public static void displayGrid()
@@ -83,6 +91,17 @@ public class BlockRepresentation1  {
         return count;
     }
 
+    public static Vector2 TransLateAxes(int zx, int zy)
+
+    {
+        int x;
+        int y;
+
+        x = zy;
+
+        y= -(zx -1);
+        return new Vector2 (x,y);
+    }
 
     public static void openAGate(int row, int col)
     {
@@ -113,11 +132,19 @@ public class BlockRepresentation1  {
             //look for block, avoid water tiles
             if (numbers[i, col] != 0)
             {
+                foreach (GameObject gameobby in Blocks)
+                {
+                    Transform trans = gameobby.transform;
+                    Debug.Log("before " + i +" , " + col);
+                    Vector2 V2 = TransLateAxes(i,col);
+                    Debug.Log("after " + V2.x + " , " + V2.y);
+                    if (trans.transform.position == new Vector3(V2.x, 0, V2.y)) { pickedCube = gameobby; };
+                }
 
                 //in case theres empty water that way (only if it's a 1x1 block)
                 if (countMembers(numbers[i, col]) == 1)
                 {
-                    if (checkIfCanMove(i, col, direction) == true) { doMoveBlock(numbers[i, col], direction);  } //to exit the while} }
+                    if (checkIfCanMove(i, col, direction) == true) { doMoveBlock(numbers[i, col], direction);  } 
                     else { terminteLoop = true; }
                 }
                 
@@ -128,6 +155,16 @@ public class BlockRepresentation1  {
             if (direction == 2) { i++; } else { i--; }
         }
 
+        //update real world ojects
+        pushCube PC = pickedCube.GetComponent<pushCube>();
+        if (PC != null)
+        {
+
+         //   PC.destination = new Vector3(lastPlace.x, 0, lastPlace.y);
+         //   PC.run = true;
+
+           PC.StartCoroutine(PC.moveToCoroutine(new Vector3(lastPlace.x, 0, lastPlace.y)));
+        }    
     }
 
     public static void openAGateHor(int row, int col)
@@ -151,10 +188,24 @@ public class BlockRepresentation1  {
             if (numbers[row, i] != 0)
             {
 
+                foreach (GameObject gameobby in Blocks)
+                {
+
+                    Transform trans = gameobby.transform;
+                    Debug.Log("before " + row + " , " + i);
+                    Vector2 V2 = TransLateAxes(row, i);
+                    Debug.Log("after " + V2.x + " , " + V2.y);
+
+                    
+
+                    if (trans.transform.position == new Vector3(V2.x, 0, V2.y)) { pickedCube = gameobby; };
+                }
+
+
                 //in case theres empty water that way (only if it's a 1x1 block)
                 if (countMembers(numbers[row, i]) == 1)
                 {
-                    if (checkIfCanMove(row, i, direction) == true) { doMoveBlock(numbers[row, i], direction);  } //to exit the while}
+                    if (checkIfCanMove(row, i, direction) == true) { doMoveBlock(numbers[row, i], direction);  } 
                     else { terminteLoop = true; }
                 }
                 
@@ -164,6 +215,19 @@ public class BlockRepresentation1  {
 
             if (direction == 1) { i++; } else {i--;}
         }
+
+        //update real world ojects
+        //    pickedCube.gameObject.SendMessage("moveTo2", new Vector3(lastPlace.x, 0, lastPlace.y));
+        pushCube PC = pickedCube.GetComponent<pushCube>();
+        if (PC != null)
+        {
+
+          //  PC.destination = new Vector3(lastPlace.x, 0, lastPlace.y);
+          //  PC.run = true;
+
+            PC.StartCoroutine(PC.moveToCoroutine(new Vector3(lastPlace.x, 0, lastPlace.y)));
+        }
+       // pickedCube.GetComponent<pushCube>().moveTo2(new Vector3(3, 2, 1));
     }
 
     static bool checkIfCanMove(int row,int col,int dir)
@@ -208,7 +272,7 @@ public class BlockRepresentation1  {
     static void doMoveBlock (int ID, int dir)
    
     {
-        int[,] direction = new int[,]{{-1,0},{0,1},{1,0},{0,-1}};;
+        int[,] direction = new int[,]{{-1,0},{0,1},{1,0},{0,-1}};
 
 
 
@@ -222,7 +286,13 @@ public class BlockRepresentation1  {
             {
                 if (numbers[j, i] == ID) 
                 {
-                    numbers[(direction[dir,0] + j), (direction[dir,1] +i)] = numbers[j, i]; 
+                    numbers[(direction[dir,0] + j), (direction[dir,1] +i)] = numbers[j, i];
+
+                    Vector2 V2 = TransLateAxes((direction[dir, 0] + j), (direction[dir, 1] + i));
+
+                    lastPlace = V2; //new Vector2((direction[dir, 1] + i), (direction[dir, 0] + j));
+                    Debug.Log(lastPlace.ToString());
+
                     numbers[j, i] = 0;
                     return;
                 };
