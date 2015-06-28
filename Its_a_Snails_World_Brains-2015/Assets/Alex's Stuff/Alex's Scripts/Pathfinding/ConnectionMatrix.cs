@@ -5,64 +5,66 @@ using System.Collections.Generic;
 public class ConnectionMatrix : MonoBehaviour 
 {
     public static int[,] placeholderArray = new int[7,7];
-
-    public List<GameObject> wayPoints = new List<GameObject>();
-    public List<Vector3> waypointPositions = new List<Vector3>();
+    public int [,] zoltansArray = new int [5,5];
     public List<Vector2> winningPath = new List<Vector2>();
     static float timepersqr = 1.0f;
     private bool moving = false;
-
-    public bool[] waypointStates;
 
 	// Use this for initialization
 	void Start () 
     {
         initialisePlaceholderArray();
-
-        foreach (GameObject i in GameObject.FindGameObjectsWithTag("Waypoint"))
-        {
-            wayPoints.Add(i);
-            waypointPositions.Add(i.gameObject.transform.position);
-            Debug.Log(wayPoints.Count);
-        }
 	}
 	
     void initialisePlaceholderArray()
     {
+        zoltansArray = BlockRepresentation1.numbers;
         // row - column
-        placeholderArray[1, 1] = 0;
-        placeholderArray[1, 2] = 0;
-        placeholderArray[1, 3] = 0;
-        placeholderArray[1, 4] = 0;
-        placeholderArray[1, 5] = 0;
+        placeholderArray[1, 1] = getValueFromArray(5, 1);
+        placeholderArray[1, 2] = getValueFromArray(4, 1);
+        placeholderArray[1, 3] = getValueFromArray(3, 1);
+        placeholderArray[1, 4] = getValueFromArray(2, 1);
+        placeholderArray[1, 5] = getValueFromArray(1, 1);
 
         // row - column
-        placeholderArray[2, 1] = 0;
-        placeholderArray[2, 2] = 0;
-        placeholderArray[2, 3] = 0;
-        placeholderArray[2, 4] = 1;
-        placeholderArray[2, 5] = 1;
+        placeholderArray[2, 1] = getValueFromArray(5, 2);
+        placeholderArray[2, 2] = getValueFromArray(4, 2);
+        placeholderArray[2, 3] = getValueFromArray(3, 2);
+        placeholderArray[2, 4] = getValueFromArray(2, 2);
+        placeholderArray[2, 5] = getValueFromArray(1, 2);
 
         // row - column
-        placeholderArray[3, 1] = 1;
-        placeholderArray[3, 2] = 1;
-        placeholderArray[3, 3] = 1;
-        placeholderArray[3, 4] = 1;
-        placeholderArray[3, 5] = 0;
+        placeholderArray[3, 1] = getValueFromArray(5, 3);
+        placeholderArray[3, 2] = getValueFromArray(4, 3);
+        placeholderArray[3, 3] = getValueFromArray(3, 3);
+        placeholderArray[3, 4] = getValueFromArray(2, 3);
+        placeholderArray[3, 5] = getValueFromArray(1, 3);
+
 
         // row - column
-        placeholderArray[4, 1] = 0;
-        placeholderArray[4, 2] = 0;
-        placeholderArray[4, 3] = 0;
-        placeholderArray[4, 4] = 0;
-        placeholderArray[4, 5] = 0;
+        placeholderArray[4, 1] = getValueFromArray(5, 4);
+        placeholderArray[4, 2] = getValueFromArray(4, 4);
+        placeholderArray[4, 3] = getValueFromArray(3, 4);
+        placeholderArray[4, 4] = getValueFromArray(2, 4);
+        placeholderArray[4, 5] = getValueFromArray(1, 4);
 
         // row - column
-        placeholderArray[5, 1] = 0;
-        placeholderArray[5, 2] = 0;
-        placeholderArray[5, 3] = 0;
-        placeholderArray[5, 4] = 0;
-        placeholderArray[5, 5] = 0;
+        placeholderArray[5, 1] = getValueFromArray(5, 5);
+        placeholderArray[5, 2] = getValueFromArray(4, 5);
+        placeholderArray[5, 3] = getValueFromArray(3, 5);
+        placeholderArray[5, 4] = getValueFromArray(2, 5);
+        placeholderArray[5, 5] = getValueFromArray(1, 5);
+    }
+
+    int getValueFromArray(int x1, int y1)
+    {
+        int val = 999;
+        val = zoltansArray[x1, y1];
+
+        if (val > 0)
+            return 1;
+        else
+            return 0;
     }
 
 	// Update is called once per frame
@@ -74,14 +76,14 @@ public class ConnectionMatrix : MonoBehaviour
         {
             winningPath = FindPath(2, 5, 3, 1);
             if (winningPath.Count > 0)
+            {
                 Debug.Log("we found the goal");
+                canUpdatePosition = !canUpdatePosition;
+            }
             else
                 Debug.Log("no goal found");
+
             Debug.Log(winningPath.Count);
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            canUpdatePosition = !canUpdatePosition;
         }
 
         if (canUpdatePosition)
@@ -97,8 +99,6 @@ public class ConnectionMatrix : MonoBehaviour
         List<Vector2> down = new List<Vector2>();
         List<Vector2> left = new List<Vector2>();
         List<Vector2> right = new List<Vector2>();
-        List<Vector2> solution = new List<Vector2>();
-        List<Vector2> closedList = new List<Vector2>();
         Debug.Log("created empty lists");
 
         Vector2 start = new Vector2(startX, startY);
