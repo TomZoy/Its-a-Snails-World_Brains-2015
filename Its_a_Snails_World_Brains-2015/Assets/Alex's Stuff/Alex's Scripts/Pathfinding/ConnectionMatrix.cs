@@ -14,8 +14,6 @@ public class ConnectionMatrix : MonoBehaviour
     public GameObject currentNode;
     public GameObject goalNode;
 
-    List<Vector2> returner = new List<Vector2>();
-
 	// Use this for initialization
 	void Start () 
     {
@@ -211,6 +209,8 @@ public class ConnectionMatrix : MonoBehaviour
     List<Vector2>DFSSearch(List<Vector2> listIn, Vector2 end)
     {
 
+        List<Vector2> returner = new List<Vector2>();
+
         Debug.Log("entered the proper dfs search");
         foreach (Vector2 vec in listIn)
         {
@@ -277,7 +277,6 @@ public class ConnectionMatrix : MonoBehaviour
             {
                 Debug.Log("terminating search, no path here");
             }
-            return null;
         }
 
         //if can go left
