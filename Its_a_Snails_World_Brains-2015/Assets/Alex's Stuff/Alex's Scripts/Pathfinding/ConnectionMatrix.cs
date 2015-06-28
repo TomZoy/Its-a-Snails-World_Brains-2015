@@ -20,9 +20,12 @@ public class ConnectionMatrix : MonoBehaviour
 	
     void initialisePlaceholderArray()
     {
+        BlockRepresentation1.initialisation();
         zoltansArray = BlockRepresentation1.numbers;
+
         // row - column
         placeholderArray[1, 1] = getValueFromArray(5, 1);
+        Debug.Log(placeholderArray[1,1] + "value of 1,1");
         placeholderArray[1, 2] = getValueFromArray(4, 1);
         placeholderArray[1, 3] = getValueFromArray(3, 1);
         placeholderArray[1, 4] = getValueFromArray(2, 1);
@@ -56,12 +59,19 @@ public class ConnectionMatrix : MonoBehaviour
         placeholderArray[5, 3] = getValueFromArray(3, 5);
         placeholderArray[5, 4] = getValueFromArray(2, 5);
         placeholderArray[5, 5] = getValueFromArray(1, 5);
+
+        Debug.Log(placeholderArray[1, 5] + "" + placeholderArray[2, 5] + "" + placeholderArray[3, 5] + "" + placeholderArray[4, 5]+""+ placeholderArray[5, 5]);
+        Debug.Log(placeholderArray[1, 4] + "" + placeholderArray[2, 4] + "" + placeholderArray[3, 4] + "" + placeholderArray[4, 4] + "" + placeholderArray[5, 4]);
+        Debug.Log(placeholderArray[1, 3] + "" + placeholderArray[2, 3] + "" + placeholderArray[3, 3] + "" + placeholderArray[4, 3] + "" + placeholderArray[5, 3]);
+        Debug.Log(placeholderArray[1, 2] + "" + placeholderArray[2, 2] + "" + placeholderArray[3, 2] + "" + placeholderArray[4, 2] + "" + placeholderArray[5, 2]);
+        Debug.Log(placeholderArray[1, 1] + "" + placeholderArray[2, 1] + "" + placeholderArray[3, 1] + "" + placeholderArray[4, 1] + "" + placeholderArray[5, 1]);
     }
 
     int getValueFromArray(int x1, int y1)
     {
         int val = 999;
         val = zoltansArray[x1, y1];
+        Debug.Log("val of" + x1 + " " + y1 + val );
 
         if (val > 0)
             return 1;
@@ -76,7 +86,7 @@ public class ConnectionMatrix : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0))
         {
-            winningPath = FindPath(2, 5, 3, 1);
+            winningPath = FindPath(startx, starty, endx, endy);
             if (winningPath.Count > 0)
             {
                 Debug.Log("we found the goal");
