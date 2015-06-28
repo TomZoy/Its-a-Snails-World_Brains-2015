@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 public class ConnectionMatrix : MonoBehaviour 
 {
-
-    public static int[,] connections = new int[25, 25];
     public static int[,] placeholderArray = new int[7,7];
+
     public List<GameObject> wayPoints = new List<GameObject>();
+    public List<Vector3> waypointPositions = new List<Vector3>();
+    public List<Vector2> winningPath = new List<Vector2>();
+    static float timepersqr = 1.0f;
+    private bool moving = false;
+
     public bool[] waypointStates;
-    public List<GameObject> openList = new List<GameObject>();
-    public List<GameObject> closedList = new List<GameObject>();
-    public GameObject currentNode;
-    public GameObject goalNode;
 
 	// Use this for initialization
 	void Start () 
@@ -22,14 +22,9 @@ public class ConnectionMatrix : MonoBehaviour
         foreach (GameObject i in GameObject.FindGameObjectsWithTag("Waypoint"))
         {
             wayPoints.Add(i);
+            waypointPositions.Add(i.gameObject.transform.position);
             Debug.Log(wayPoints.Count);
         }
-        // cycle through all waypoints and determine if they are active or not
-        currentNode = GameObject.Find("START");
-        goalNode = GameObject.Find("END");
-
-        closedList.Add(currentNode);
-        Debug.Log("closed List" + closedList.Count);
 	}
 	
     void initialisePlaceholderArray()
@@ -73,11 +68,26 @@ public class ConnectionMatrix : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
+        bool canUpdatePosition = false;
+
         if(Input.GetMouseButtonDown(0))
         {
-            List<Vector2> winningPath = new List<Vector2>();
             winningPath = FindPath(2, 5, 3, 1);
+            if (winningPath.Count > 0)
+                Debug.Log("we found the goal");
+            else
+                Debug.Log("no goal found");
             Debug.Log(winningPath.Count);
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            canUpdatePosition = !canUpdatePosition;
+        }
+
+        if (canUpdatePosition)
+        {
+            canUpdatePosition = false;
+            StartCoroutine(callCoroutine());
         }
 	}
 
@@ -346,5 +356,194 @@ public class ConnectionMatrix : MonoBehaviour
             }
         }
         return false;
+    }
+
+    void FollowPath(List<Vector2> listIn)
+    {
+        //this method is going to assign each 2d array location to a waypoint position
+        //it will then make the snail go through the final list one by one till it gets to the goal
+        Debug.Log("started to follow path");
+
+        foreach(Vector2 vec in listIn)
+        {
+            //find the player object
+            //move to next postion in list
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            Debug.Log("get position vector returned as " + GetPosition(vec));
+            StartCoroutine(moveToCoroutine(vec, player));
+            Debug.Log("player position" + player.transform.position);
+        }
+    }
+
+    Vector3 GetPosition(Vector2 vecIn)
+    {
+        Vector3 returnVec = new Vector3(1, 1, 1);
+
+        if (vecIn == new Vector2(1,1))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(1, 2))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(1, 3))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(1, 4))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(1, 5))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(2, 1))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(2, 2))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(2, 3))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(2, 4))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(2, 5))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(3, 1))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(3, 2))
+        {
+            //input the positions in these
+            returnVec = new Vector3(2, 1, 1);
+        }
+        else if (vecIn == new Vector2(3, 3))
+        {
+            //input the positions in these
+            returnVec = new Vector3(3, 1, 1);
+        }
+        else if (vecIn == new Vector2(3, 4))
+        {
+            //input the positions in these
+            returnVec = new Vector3(4, 1, 1);
+        }
+        else if (vecIn == new Vector2(3, 5))
+        {
+            //input the positions in these
+            returnVec = new Vector3(5, 1, 1);
+        }
+        else if (vecIn == new Vector2(4, 1))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(4, 2))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(4, 3))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(4, 4))
+        {
+            //input the positions in these
+             returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(4, 5))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(5, 1))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(5, 2))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(5, 3))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(5, 4))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else if (vecIn == new Vector2(5, 5))
+        {
+            //input the positions in these
+            returnVec = new Vector3(1, 1, 1);
+        }
+        else
+        {
+            returnVec = new Vector3(2, 2, 2);
+        }
+
+
+        return returnVec;
+    }
+
+    public IEnumerator moveToCoroutine(Vector3 target, GameObject player)
+    {
+        moving = true;
+        Vector3 v3 = player.transform.position;
+        float totalTime = (target - player.transform.position).magnitude * timepersqr;
+        float currentTime = 0;
+        while (currentTime < totalTime)
+        {
+            currentTime += Time.deltaTime;
+            player.transform.position = Vector3.Lerp(v3, target, currentTime / totalTime);
+
+            yield return 0;
+
+        }
+
+        player.transform.position = target;
+        moving = false;
+    }
+
+    public IEnumerator callCoroutine()
+    {
+        int i = 0;
+
+        while (i < winningPath.Count)
+        {
+            if (!moving)
+            {
+                StartCoroutine(moveToCoroutine(winningPath[i], GameObject.FindGameObjectWithTag("Player")));
+                i++;
+            }
+           yield return 0;
+        }
     }
 }
