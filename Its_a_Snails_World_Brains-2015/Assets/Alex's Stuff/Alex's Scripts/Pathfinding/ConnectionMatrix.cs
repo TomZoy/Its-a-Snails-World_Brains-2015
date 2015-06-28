@@ -10,6 +10,8 @@ public class ConnectionMatrix : MonoBehaviour
     static float timepersqr = 1.0f;
     private bool moving = false;
 
+    public int startx, starty, endx, endy;
+
 	// Use this for initialization
 	void Start () 
     {
